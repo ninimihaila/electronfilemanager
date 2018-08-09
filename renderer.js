@@ -31,7 +31,8 @@ const app = new Vue({
       go(path.dirname(this.location))
     },
     home() {
-      go(path.dirname(process.cwd()))
+      // go(path.dirname(process.cwd()))
+      ls(process.cwd())
     }
   },
   computed: {
@@ -47,34 +48,28 @@ const app = new Vue({
   }
 })
 
+async function ls(location) {
+  const response = await fetch(`http://localhost:9999/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify({location: location})
+  })
+  const details = await response.json()
+  return details
+}
+
 async function go(currentPath, vueApp) {
-  let appInstance = vueApp || app;
-  if (['bmp', 'png', 'gif', 'jpg'].some(ext => currentPath.endsWith(`.${ext}`))) {
-    appInstance.image = 'file://' + currentPath
-    appInstance.fileContent = null
-  } else {
-    appInstance.image = null
-    appInstance.fileContent = null
+  const details = await ls(currentPath)
+  console.log(currentPath)
+  console.log(details)
+  let appInstance = vueApp || app
 
-    try {
-      const stat = await lstat(currentPath)
-
-      if (stat.isDirectory()) {
-        appInstance.location = currentPath
-        appInstance.files = []
-
-        const files = await readdir(appInstance.location)
-        for (let i = 0; i < files.length; i++) {
-          const fstat = await lstat(`${currentPath}/${files[i]}`)
-          appInstance.files.push({ id: i, name: files[i], class: fstat.isDirectory() ? 'icon-folder' : 'icon-doc' })
-        }
-      } else if (['txt', 'html', 'js', 'py'].some(ext => currentPath.endsWith(`.${ext}`))) {
-        appInstance.fileContent = await readFile(currentPath, 'utf8')
-      } else {
-        appInstance.fileContent = null
-      }
-    } catch (e) {
-      console.log(e)
-    }
+  appInstance.fileContent = details.fileContent
+  appInstance.image = details.image
+  if (details.isDir) {
+    appInstance.location = currentPath
+    appInstance.files = details.files
   }
 }
