@@ -4,8 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>File Browser</title>
-  <link rel="stylesheet" type="text/css" href="lib/css/photon.min.css">
-  <script src="node_modules/vue/dist/vue.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui-css/semantic.min.css">
 
   <style>
     .toolbar {
@@ -20,37 +19,32 @@
   <!--<input type="button" value="Reload the app after changing the code"  onClick="window.location.reload()"/>-->
   <!--</p>-->
   <div id="app" class="window">
-    <header class="toolbar toolbar-header">
-      <h1 class="title">{{ `Current location: ${location}` }}</h1>
-      <div class="toolbar-actions">
-        <div class="btn-group">
-          <button class="btn btn-default" @click="up">
-            <span class="icon icon-up"></span>
-          </button>
-          <button class="btn btn-default" @click="home">
-            <span class="icon icon-home"></span>
-          </button>
-        </div>
-
-        <button class="btn btn-default pull-right">
-            <span class="icon icon-menu"></span>
-          </button>
-      </div>
-    </header>
-
-    <div class="window-content">
-      <div class="pane-group">
-        <div class="pane pane-sm sidebar">
-          <nav class="nav-group">
-            <span class="nav-group-item">
-              <input class="form-control" type="text" v-model="filter" placeholder="Filter current directory">
-            </span>
-            <span class="nav-group-item" v-for="file in filteredFiles">
-              <listing v-bind:key="file.id" v-bind:item="file" class="media-body"></listing>
-            </span>
+    <div class="main">
+      <div class="ui content">
+        <div class="ui visible left thin sidebar">
+          <nav class="ui list">
+            <button class="ui icon button" @click="up">
+              <i class="arrow up icon"></i>
+            </button>
+            <div class="ui search">
+              <div class="ui icon input">
+                <input type="text" v-model="filter" placeholder="Filter current directory">
+                <i class="search icon"></i>
+              </div>
+            </div>
           </nav>
         </div>
-        <div class="pane">
+
+        <div class="pusher">
+          <div>
+            <h1 class="title">{{ `Current location: ${location}` }}
+          </div>
+
+          <div class="ui cards">
+            <span class="card" v-for="file in filteredFiles">
+              <listing v-bind:key="file.id" v-bind:item="file" />
+            </span>
+          </div>
           <p>
             <img v-bind:src="image" />
           </p>
@@ -58,14 +52,22 @@
         </div>
       </div>
     </div>
-
-    <footer class="toolbar toolbar-footer">
-      <h1 class="title">Footer</h1>
-    </footer>
   </div>
+
+  <!-- Hack to get jquery working -->
   <script>
-    require('./renderer.js')
+    window.nodeRequire = require;
+    delete window.require;
+    delete window.exports;
+    delete window.module;
   </script>
+
+  <!-- Libs -->
+  <script src="node_modules/vue/dist/vue.min.js"></script>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+
+  <!-- Custom -->
+  <script src="renderer.js"></script>
 
 </body>
 

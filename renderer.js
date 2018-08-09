@@ -1,14 +1,10 @@
-const path = require('path')
-const util = require('util')
-const fs = require('fs')
+const path = nodeRequire('path')
+const semantic = nodeRequire('semantic-ui-css')
 
-const lstat = util.promisify(fs.lstat)
-const readdir = util.promisify(fs.readdir)
-const readFile = util.promisify(fs.readFile)
 
 Vue.component('listing', {
   props: ['item'],
-  template: `<span @click="clicked(item.name)"><span class="icon" v-bind:class="item.class"></span>{{ item.name }}</span>`,
+  template: `<span @click="clicked(item.name)" class="content"><i class="icon" v-bind:class="item.class"></i>{{ item.name }}</span>`,
   methods: {
     clicked(name) {
       go(path.format({ dir: app.location, base: name }))

@@ -28,7 +28,7 @@ async function getDirDetails(location) {
         const files = await readdir(location)
         for (let i = 0; i < files.length; i++) {
           const fstat = await lstat(`${location}/${files[i]}`)
-          details.files.push({ id: i, name: files[i], class: fstat.isDirectory() ? 'icon-folder' : 'icon-doc' })
+          details.files.push({ id: i, name: files[i], class: fstat.isDirectory() ? 'folder' : 'file' })
         }
       } else if (['txt', 'html', 'js', 'py'].some(ext => location.endsWith(`.${ext}`))) {
         details.fileContent = await readFile(location, 'utf8')
