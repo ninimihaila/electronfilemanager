@@ -1,0 +1,13 @@
+{
+  "name": "electronfilemanager",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.2.0",
+    "electron": "^2.0.6"
+  },
+  "dependencies": {
+    "vue": "^2.5.17"
+  }
+}

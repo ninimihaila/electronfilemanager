@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>File Browser</title>
+  <link rel="stylesheet" type="text/css" href="lib/css/photon.min.css">
+  <script src="node_modules/vue/dist/vue.min.js"></script>
+
+  <style>
+    .toolbar {
+      -webkit-user-select: none;
+      -webkit-app-region: drag;
+    }
+  </style>
+</head>
+
+<body>
+  <!--<p>-->
+  <!--<input type="button" value="Reload the app after changing the code"  onClick="window.location.reload()"/>-->
+  <!--</p>-->
+  <div id="app" class="window">
+    <header class="toolbar toolbar-header">
+      <h1 class="title">{{ `Current location: ${location}` }}</h1>
+      <div class="toolbar-actions">
+        <div class="btn-group">
+          <button class="btn btn-default" @click="up">
+            <span class="icon icon-up"></span>
+          </button>
+          <button class="btn btn-default" @click="home">
+            <span class="icon icon-home"></span>
+          </button>
+        </div>
+
+        <button class="btn btn-default pull-right">
+            <span class="icon icon-menu"></span>
+          </button>
+      </div>
+    </header>
+
+    <div class="window-content">
+      <div class="pane-group">
+        <div class="pane pane-sm sidebar">
+          <nav class="nav-group">
+            <span class="nav-group-item">
+              <input class="form-control" type="text" v-model="filter" placeholder="Filter current directory">
+            </span>
+            <span class="nav-group-item" v-for="file in filteredFiles">
+              <listing v-bind:key="file.id" v-bind:item="file" class="media-body"></listing>
+            </span>
+          </nav>
+        </div>
+        <div class="pane">
+          <p>
+            <img v-bind:src="image" />
+          </p>
+          <p>{{ fileContent }}</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="toolbar toolbar-footer">
+      <h1 class="title">Footer</h1>
+    </footer>
+  </div>
+  <script>
+    require('./renderer.js')
+  </script>
+
+</body>
+
+</html>
