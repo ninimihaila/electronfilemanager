@@ -12,6 +12,7 @@ Vue.component('listing', {
   methods: {
     clicked(name) {
       go(path.format({ dir: app.location, base: name }))
+      app.filter = ''
     }
   }
 })
@@ -40,7 +41,7 @@ const app = new Vue({
       if(this.filter == ''){
         return this.files;
       }
-      return this.files.filter(file => file.name.indexOf(this.filter) >= 0);
+      return this.files.filter(file => file.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0);
     }
   },
   mounted() {
